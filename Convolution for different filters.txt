@@ -1,0 +1,53 @@
+% READ THE IMAGE
+original = imread('flowersHD.jpg');
+
+
+% Add noise
+noise1 = imnoise(original, 'salt & pepper');
+
+
+noise2 = imnoise(original, 'gaussian');
+
+
+noise3 = imnoise(original, 'speckle');
+
+
+% Create kernel
+h1 = 1/9 * ones(3, 3);
+h2 = 1/64 * ones(8, 8);
+h3 = fspecial('gaussian', [5 5], 1);
+h4 = fspecial('gaussian', [3 3], 0.5);
+h_combined = h1 + h4;
+
+
+
+
+
+% Try to create the original images
+recover1 = convn(noise1, h1, 'same');
+
+
+recover1_2 = convn(noise1, h2, 'same');
+
+
+recover2 = convn(noise2, h1, 'same');
+
+
+recover2_2 = convn(noise2, h2, 'same');
+
+
+recover3 = convn(noise3, h3, 'same');
+
+
+recover3_2 = convn(noise3, h2, 'same');
+%displaying
+subplot(3,3,1),imshow(original),title('Original');
+subplot(3,3,2),imshow(noise1),title("salt&peeper");
+subplot(3,3,3),imshow(noise2),title("gausian");
+subplot(3,3,4),imshow(noise3),title("speckle");
+subplot(3,3,5),imshow(uint8(recover1)),title("3*3, salt");
+subplot(3,3,6),imshow(uint8(recover1_2)),title("5*5,salt");
+subplot(3,3,7),imshow(uint8(recover2)),title("3*3,gausian");
+subplot(3,3,8),imshow(uint8(recover2_2)),title("5*5,gausian");
+subplot(3,3,9),imshow(uint8(recover3)),title("3*3,speckle");
+imshow(uint8(recover3_2)),title("the last one");

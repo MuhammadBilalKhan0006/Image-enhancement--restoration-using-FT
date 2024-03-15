@@ -1,0 +1,20 @@
+in=imread('person.jpg');
+y=rgb2gray(in);
+y=im2double(y);
+%function
+PSF=fspecial('disk',8);
+%lets convolve
+konv=conv2(y,PSF);
+subplot(3,1,1);
+imshow(konv);
+%now lets try to go backward
+X=fft2(konv);
+subplot(3,1,2);
+imshow(X);
+newh=zeros(size(konv));
+pfsize=size(PSF);
+newh(1:pfsize(1),1:pfsize(2))=PSF;
+H=fft2(newh);
+ydeblurred=ifft2(X./H);
+subplot(3,1,3);
+imshow(ydeblurred);

@@ -1,0 +1,90 @@
+% Load the image
+A = imread('noise.png');
+figure;
+imshow(A);
+
+% Display the original image
+subplot(2, 3, 1);
+imshow(A);
+title('Original Image');
+
+% Convert the image to double for processing
+A_double = im2double(A);
+
+
+% Separate color channels
+R = A_double(:,:,1);
+G = A_double(:,:,2);
+B = A_double(:,:,3);
+
+% Apply Fourier Transform to each color channel
+transfered_R = fft2(R);
+transfered_G = fft2(G);
+transfered_B = fft2(B);
+
+% Shift zero frequency component to the center
+transfered_R = fftshift(transfered_R);
+transfered_G = fftshift(transfered_G);
+transfered_B = fftshift(transfered_B);
+
+% Display the magnitude of the Fourier Transform for each channel
+subplot(2, 3, 4);
+imshow(log(abs(transfered_R) + 1), []);
+title('Fourier Transform (Red)');
+
+subplot(2, 3, 5);
+imshow(log(abs(transfered_G) + 1), []);
+title('Fourier Transform (Green)');
+
+subplot(2, 3, 6);
+imshow(log(abs(transfered_B) + 1), []);
+title('Fourier Transform (Blue)');
+
+% Reconstruct the image from the Fourier Transform for each channel
+reconstructed_R = ifft2(ifftshift(transfered_R));
+reconstructed_G = ifft2(ifftshift(transfered_G));
+reconstructed_B = ifft2(ifftshift(transfered_B));
+
+% Combine the color channels with original phase information
+reconstructed_image = cat(3, real(reconstructed_R), real(reconstructed_G), real(reconstructed_B));
+
+% Display the reconstructed color image
+
+subplot(2, 3, 3);
+imshow(reconstructed_image);
+title('Reconstructed Color Image');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Convert the image to HSV color space
+hsv_image = rgb2hsv(A_double);
+% Increase the saturation by a factor of 1.3
+hsv_image(:, :, 2) = hsv_image(:, :, 2) * 1.3;
+% Convert the image back to RGB color space
+saturated_image = hsv2rgb(hsv_image);
+% Display the saturated image
+figure;
+imshow(saturated_image),title('Saturated Image');
+

@@ -1,0 +1,7 @@
+I=imread('lowcontrastflower.jpg');
+I2=rgb2hsv(I);
+V=I2(:,:,3);
+V2=imadjust(V);
+I2(:,:,3)=V2;
+I3=hsv2rgb(I2);
+montage({I,I3},'Size',[1,2]);

@@ -1,0 +1,9 @@
+in = imread('lowcontrast2.jpg');
+K = imadjust(in, [0.3 0.7], []);
+
+% Display the images side by side using montage
+montage({in, K}, 'Size', [1, 2]);
+
+% Add titles to each subplot
+title('Original Image');
+title('Adjusted Image');

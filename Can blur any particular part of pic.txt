@@ -1,0 +1,11 @@
+clc
+clear all
+close all
+warning off
+a=imread('person.jpg');
+imshow(a);
+[j rect]=imcrop(a);
+ag=fspecial('average',[5,5]);
+g=imfilter(a,ag);
+g( rect(2):rect(2)+rect(4),rect(1):rect(1)+rect(3), :)=j;
+imshow(g);
